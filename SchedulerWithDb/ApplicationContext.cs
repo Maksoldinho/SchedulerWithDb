@@ -10,6 +10,7 @@ namespace SchedulerWithDb
 {
     internal class ApplicationContext : DbContext
     {
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<ScheduleTask> ScheduleTasks { get; set; } = null!;
 
         public ApplicationContext()
@@ -21,6 +22,8 @@ namespace SchedulerWithDb
         {
             optionsBuilder.UseSqlite("Data Source= ScheduleDataBase.db");
         }
+        
+
         
     }
 }

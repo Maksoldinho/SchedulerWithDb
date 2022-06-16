@@ -16,47 +16,50 @@ namespace SchedulerWithDb
         {
             TaskName = taskName;
             dueDate = date;
-
-            //string FinalResult = $"\nYour task is: {taskName}     " +
-            //    $"Your date is: {date.Date}";
-            //Data.TaskBar.Push(FinalResult);
-
-            ActionWithDb(ClassWithEnums.Action.Add);
+            ActionWithDb(DbActionEnums.Action.Add);
         }
-        public static void ActionWithDb(ClassWithEnums.Action ActionName)
+        public static void ActionWithDb(DbActionEnums.Action ActionName)
+        {
+            using (ApplicationContext ac = new ApplicationContext())
+            { 
+            switch (ActionName)
+                {
+                    case DbActionEnums.Action.Add: AddToDb(); break;
+                    case DbActionEnums.Action.Delete: DeleteFromDb(); break;
+                    default: throw new ArgumentException();
+                }
+            }
+        }
+
+        public static void AddToDb()
+        {
+
+            using (ApplicationContext ac = new ApplicationContext())
+            {
+                ScheduleTask taskToAdd = new ScheduleTask() { Description = TaskName, DueDate = dueDate, };
+                ac.ScheduleTasks.Add(taskToAdd);
+                ac.SaveChanges();
+            }
+        }
+        public static void DeleteFromDb()
         {
             using (ApplicationContext ac = new ApplicationContext())
             {
-                ScheduleTask taskToAdd = new ScheduleTask() { Description=TaskName, DueDate = dueDate,};
-                if (ActionName == ClassWithEnums.Action.Add)
+                if (int.TryParse(Data.IdToDelete, out int id))
                 {
-                    ac.ScheduleTasks.Add(taskToAdd);
-                    ac.SaveChanges();
-                }
-
-                else if(ActionName == ClassWithEnums.Action.Delete)
-                {
-                    if (int.TryParse(Data.IdToDelete, out int id))
+                    int Id = Convert.ToInt32(Data.IdToDelete);
+                    foreach (var task in ac.ScheduleTasks)
                     {
-
-
-                        int Id = Convert.ToInt32(Data.IdToDelete);
-
-
-
-                        foreach (var task in ac.ScheduleTasks)
+                        if (task.Id.Equals(Id))
                         {
-                            if (task.Id.Equals(Id))
-                            {
-                                ac.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-                                var item = ac.ScheduleTasks.Find(task.Id);
-                                ac.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-                                ac.ScheduleTasks.Remove(item);
-                                ac.SaveChanges();
-                            }
+                            ac.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+                            var item = ac.ScheduleTasks.Find(task.Id);
+                            ac.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+                            ac.ScheduleTasks.Remove(item);
+                            ac.SaveChanges();
                         }
-
                     }
+
                 }
             }
         }

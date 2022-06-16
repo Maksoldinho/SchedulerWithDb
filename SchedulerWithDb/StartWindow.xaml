@@ -1,0 +1,51 @@
+﻿<Window x:Class="SchedulerWithDb.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchedulerWithDb" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="450">
+    <Grid>
+        <StackPanel x:Name="Main_Panel" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <Label Content="Recent Remarks" FontSize="25" Width="192" Height="41"/>
+            <TextBlock Name="TextBlockWithRecentTasks" TextWrapping="Wrap" Text="" Height="175" Width="324" Margin="0,20" HorizontalAlignment="Center"/>
+            <Button x:Name="Add_Button" Content="Add" Height="36" Width="128" Margin="0,20" Click="Add_Button_Click" />
+            <Button x:Name="Delete_Button" Content="Delete Remark" Height="36" Width="128" Margin="0,20" Click="Delete_Button_Click" />
+            <Button x:Name="ViewAll_Button" Content="View All" Height="36" Width="128" Click="ViewAll_Button_Click" />
+        </StackPanel>
+
+        <StackPanel x:Name="ViewAll_Panel"  Visibility="Hidden">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" Height="350">
+
+                <TextBlock Name="TextBlockWithTasks" Text="" Height="auto" Width="324" Margin="0,20" HorizontalAlignment="Center"/>
+
+            </ScrollViewer>
+
+            <Button Click="Back_Button_Click_fromViewAll" Content="Back" Height="36" Width="128"/>
+        </StackPanel>
+
+        <StackPanel x:Name="Delete_Panel"  Visibility="Hidden">
+            <Label Content="Write below an Id of a remark which you wanna delete"/>
+            <TextBox x:Name="IdForDeletePicker" Text="" Margin="0,20" Width="100" Height="40" FontSize="25"/>
+            <Button x:Name="DeleteActionAccept_Button" Content="Accept" Height="36" Width="128" Click="DeleteActionAccept_Button_Click"/>
+        </StackPanel>
+
+        <StackPanel x:Name="Add_Panel" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Visibility="Hidden"  HorizontalAlignment="Center">
+            <Label Content="Write down here a task ↓" FontSize="20"  HorizontalAlignment="Center"/>
+            <TextBox x:Name="TaskPicker" TextWrapping="Wrap" Text="" Margin="0,20" Width="350" Height="40" FontSize="20"/>
+            <Label Content="Write down here a date when to remind ↓" Margin="0,50,0,0" FontSize="20"  HorizontalAlignment="Center"/>
+            <DatePicker x:Name="DatePicker"/>
+            <Label HorizontalAlignment="Center">
+                <TextBlock>
+                    <TextBlock.Text>Do you want to be reminded?</TextBlock.Text>
+                    <CheckBox VerticalAlignment="Center" x:Name="Checkbox" Checked="Checkbox_Checked" Unchecked="Checkbox_Unchecked"/>
+                </TextBlock>
+            </Label>
+            <xctk:DateTimePicker x:Name="DatePickerForReminding" Visibility="Hidden" Format="Custom" FormatString="dd.MM.yyyy HH:mmtt" />
+            <Button  x:Name="Accept_Button" Content="Accept" Height="36" Width="128" Margin="0,50,0,0" Click="Accept_Button_Click"/>
+            <Button  x:Name="Back_Button" Content="Back" Height="36" Width="128" Margin="0,20,0,0" Click="Back_Button_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
